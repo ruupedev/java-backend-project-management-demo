@@ -1,0 +1,67 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
+    <title>Project Manager</title>
+  </head>
+
+  <body>
+    <h1>Manage Project</h1>
+    <h2 th:text="${project.name}"></h2>
+
+    <div
+      style="background-color: rgb(206, 206, 206)"
+      th:each="task : ${project.tasks}"
+    >
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <h3 th:text="${task.title}"></h3>
+        <span th:each="tag : ${task.tags}" th:text="${tag.name}"></span><br />
+      </div>
+
+      <span th:text="${task.description}"></span><br /><br />
+      <span th:text="${task.employee.name}"></span>
+      -
+      <span th:text="${task.status}"></span>
+
+      <br />
+      <a
+        sec:authorize="hasAuthority('ADMIN')"
+        th:href="@{/editTask/{projectId}/{taskId}(projectId=${project.id}, taskId=${task.id})}"
+        >Edit</a
+      >
+
+      <a sec:authorize="hasAuthority('ADMIN')">-</a>
+
+      <a
+        th:href="@{/changeStatus/{projectId}/{taskId}(projectId=${project.id}, taskId=${task.id})}"
+        >Change Status</a
+      >
+      <br /><br />
+      <div th:each="comment : ${task.comments}">
+        <span th:text="${comment.comment}"></span>
+        -
+        <span th:text="${comment.employee.name}"></span>
+      </div>
+      <a th:href="@{/addComment/{taskId}(taskId=${task.id})}">Add Comment</a>
+
+      <br />
+      <br />
+    </div>
+
+    <a
+      sec:authorize="hasAuthority('ADMIN')"
+      th:href="@{/add/{id}(id=${project.id})}"
+    >
+      Add Task</a
+    >
+    <br /><br />
+    <a th:href="@{/}">Back</a>
+  </body>
+</html>

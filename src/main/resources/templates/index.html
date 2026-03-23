@@ -1,0 +1,60 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
+    <title>Project Manager</title>
+  </head>
+
+  <body>
+    <div style="display: flex; align-items: center; gap: 1rem">
+      <h1>Signed in as <span sec:authentication="name"></span></h1>
+      <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out" />
+      </form>
+    </div>
+
+    <h1>Project Manager</h1>
+    <div
+      th:each="project : ${projects}"
+      style="margin-bottom: 2rem; background-color: rgb(206, 206, 206)"
+    >
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <h2><span th:text="${project.name}"></span></h2>
+        <a th:href="@{/manage/{id}(id=${project.id})}">Manage</a>
+      </div>
+
+      <div th:each="task : ${project.tasks}">
+        <h3 th:text="${task.title}"></h3>
+        <span th:text="${task.description}"></span>
+        <br />
+        <span th:text="${task.employee.name}"></span>
+        /
+        <span th:text="${task.status}"></span>
+        /
+        <span th:each="tag : ${task.tags}" th:text="${tag.name}"></span>
+        <br />
+        <a
+          sec:authorize="hasAuthority('ADMIN')"
+          th:href="@{/editTask/{projectId}/{taskId}(projectId=${project.id}, taskId=${task.id})}"
+          >Edit</a
+        >
+        <a sec:authorize="hasAuthority('ADMIN')">-</a>
+        <a
+          th:href="@{/changeStatus/{projectId}/{taskId}(projectId=${project.id}, taskId=${task.id})}"
+          >Change Status</a
+        >
+      </div>
+    </div>
+
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/createProject}"
+      >Create New Project</a
+    >
+  </body>
+</html>

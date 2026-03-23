@@ -1,0 +1,61 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
+    <title>Project Manager</title>
+  </head>
+  <body>
+    <h1>Add Task</h1>
+    <form th:action="@{/savetask}" th:object="${task}" method="post">
+      <input type="hidden" name="project_id" th:value="${project.id}" />
+      <td>
+        Title
+        <input type="text" placeholder="Title" name="title" />
+        <span
+          th:if="${#fields.hasErrors('title')}"
+          th:errors="*{title}"
+          style="color: red"
+        ></span>
+      </td>
+      <br />
+      <td>
+        Description
+        <input type="text" placeholder="Description" name="description" />
+        <span
+          th:if="${#fields.hasErrors('description')}"
+          th:errors="*{description}"
+          style="color: red"
+        ></span>
+      </td>
+      <option value="">Select employee</option>
+      <select name="employee_id">
+        <option
+          th:each="employee : ${employees}"
+          th:value="${employee.id}"
+          th:text="${employee.name}"
+        ></option>
+      </select>
+
+      <select name="tags" multiple>
+        <option
+          th:each="tag : ${tags}"
+          th:value="${tag.id}"
+          th:text="${tag.name}"
+        ></option>
+      </select>
+
+      <br />
+      <!-- HOW DO YOU SAVE NEW TASK TO PROJECT?! -->
+      <button type="submit">Save task</button>
+    </form>
+
+    <a th:href="@{/manage/{id}(id=${project.id})}">Back</a>
+  </body>
+</html>

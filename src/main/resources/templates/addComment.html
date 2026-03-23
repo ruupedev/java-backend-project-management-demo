@@ -1,0 +1,33 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
+    <title>Add Comment</title>
+  </head>
+
+  <body>
+    <h1>Add Comment</h1>
+    <form th:action="@{/saveComment}" th:object="${comment}" method="post">
+      <input type="hidden" name="project_id" th:value="${project.id}" />
+      <input type="hidden" name="task_id" th:value="${task.id}" />
+      <input type="text" placeholder="comment" name="comment" />
+
+      <option value="">Select employee</option>
+      <select name="employee_id">
+        <option
+          th:each="employee : ${employees}"
+          th:value="${employee.id}"
+          th:text="${employee.name}"
+        ></option>
+      </select>
+      <button type="submit">Add comment</button>
+    </form>
+  </body>
+</html>

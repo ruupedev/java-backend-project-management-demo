@@ -1,0 +1,36 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/css/bootstrap.min.css"
+      th:href="@{/css/bootstrap.min.css}"
+    />
+    <title>Edit Task</title>
+  </head>
+
+  <body>
+    <h3 th:text="${task.title}"></h3>
+    <p th:text="${task.description}"></p>
+
+    <form th:action="@{/saveEditedStatus}" method="post">
+      <input type="hidden" name="project_id" th:value="${project.id}" />
+      <input type="hidden" name="task_id" th:value="${task.id}" />
+
+      <select name="status">
+        <option
+          th:each="status : ${statuses}"
+          th:value="${status}"
+          th:text="${status}"
+          th:selected="${status == task.status}"
+        ></option>
+      </select>
+
+      <br />
+      <button type="submit">Save task</button>
+    </form>
+  </body>
+</html>
