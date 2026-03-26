@@ -32,13 +32,9 @@ import ruupe.projektinhallinta.domain.TaskStatus;
 public class MainController {
 
     private final TagRepository tagRepository;
-
     private final CommentRepository commentRepository;
-
     private final EmployeeRepository employeeRepository;
-
     private final TaskRepository taskRepository;
-
     private final ProjectRepository projectRepository;
 
 
@@ -179,14 +175,12 @@ public class MainController {
         Employee employee = employeeRepository.findById(employee_id).orElseThrow();
         task.setEmployee(employee);
         
-        
         if (tags != null) {
             List<Tag> selectedTags = new ArrayList<>();
             tagRepository.findAllById(tags).forEach(selectedTags::add);
             task.setTags(selectedTags);
         }
       
-       
         taskRepository.save(task);
         return "redirect:/manage/" + project_id;
     }
@@ -216,8 +210,6 @@ public class MainController {
         }
         
         taskRepository.save(task);
-
-        
 
         return "redirect:/manage/" + project_id;
 
